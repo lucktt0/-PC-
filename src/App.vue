@@ -1,32 +1,34 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+  <div class="container">
+    <Header></Header>
+    <!-- 路由组件出口位置 -->
+    <router-view></router-view>
+    <!-- 在Home、Search显示，在Login、Register隐藏 -->
+    <!-- 根据组件$route获取当前路由信息，通过path判断 -->
+    <!-- <Footer v-show="this.$route.path === '/home' || this.$route.path === '/search'"></Footer> -->
+    <!-- 配置路由时，添加路由元信息【meta】 -->
+    <Footer v-show="this.$route.meta.show"></Footer>
   </div>
 </template>
+<script>
+import Header from '@/components/Header/Header.vue'
+import Footer from '@/components/Footer/Footer.vue'
 
-<style lang="less">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+export default {
+  name: 'App',
+  data() {
+    return {}
+  },
+  components: {
+    Header,
+    Footer
+  },
+  methods: {},
+  // 组件挂载完毕，向服务器发请求,将请求写至此处，性能更好，只会请求一次数据
+  mounted() {
+    // 通知vuex发请求,获取数据,存储于仓库中
+    this.$store.dispatch('categoryList')
   }
 }
-</style>
+</script>
+<style lang="less" scoped></style>
